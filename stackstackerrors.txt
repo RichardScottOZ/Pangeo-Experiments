@@ -1,0 +1,192 @@
+[###########                             ] | 28% Completed | 12min 18.7s
+---------------------------------------------------------------------------
+CPLE_OpenFailedError                      Traceback (most recent call last)
+rasterio\_base.pyx in rasterio._base.DatasetBase.__init__()
+
+rasterio\_shim.pyx in rasterio._shim.open_dataset()
+
+rasterio\_err.pyx in rasterio._err.exc_wrap_pointer()
+
+CPLE_OpenFailedError: '/vsicurl/https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22M/EB2020/8/S2A_22MEB_20200816_0_L2A/B02.tif' not recognized as a supported file format.
+
+During handling of the above exception, another exception occurred:
+
+RasterioIOError                           Traceback (most recent call last)
+<ipython-input-37-75ef01e3c838> in <module>
+      7     with dask.diagnostics.ProgressBar():
+      8         #croppedNP = median(b02, dim="time").compute()
+----> 9         croppedNP = b.compute()
+     10         b02small_list_results.append(croppedNP)
+     11 
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\xarray\core\dataarray.py in compute(self, **kwargs)
+    897         """
+    898         new = self.copy(deep=False)
+--> 899         return new.load(**kwargs)
+    900 
+    901     def persist(self, **kwargs) -> "DataArray":
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\xarray\core\dataarray.py in load(self, **kwargs)
+    871         dask.compute
+    872         """
+--> 873         ds = self._to_temp_dataset().load(**kwargs)
+    874         new = self._from_temp_dataset(ds)
+    875         self._variable = new._variable
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\xarray\core\dataset.py in load(self, **kwargs)
+    796 
+    797             # evaluate all the dask arrays simultaneously
+--> 798             evaluated_data = da.compute(*lazy_data.values(), **kwargs)
+    799 
+    800             for k, data in zip(lazy_data, evaluated_data):
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\base.py in compute(*args, **kwargs)
+    564         postcomputes.append(x.__dask_postcompute__())
+    565 
+--> 566     results = schedule(dsk, keys, **kwargs)
+    567     return repack([f(r, *a) for r, (f, a) in zip(results, postcomputes)])
+    568 
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\threaded.py in get(dsk, result, cache, num_workers, pool, **kwargs)
+     77             pool = MultiprocessingPoolExecutor(pool)
+     78 
+---> 79     results = get_async(
+     80         pool.submit,
+     81         pool._max_workers,
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\local.py in get_async(submit, num_workers, dsk, result, cache, get_id, rerun_exceptions_locally, pack_exception, raise_exception, callbacks, dumps, loads, chunksize, **kwargs)
+    512                             _execute_task(task, data)  # Re-execute locally
+    513                         else:
+--> 514                             raise_exception(exc, tb)
+    515                     res, worker_id = loads(res_info)
+    516                     state["cache"][key] = res
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\local.py in reraise(exc, tb)
+    323     if exc.__traceback__ is not tb:
+    324         raise exc.with_traceback(tb)
+--> 325     raise exc
+    326 
+    327 
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\local.py in execute_task(key, task_info, dumps, loads, get_id, pack_exception)
+    221     try:
+    222         task, data = loads(task_info)
+--> 223         result = _execute_task(task, data)
+    224         id = get_id()
+    225         result = dumps((result, id))
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\core.py in _execute_task(arg, cache, dsk)
+    119         # temporaries by their reference count and can execute certain
+    120         # operations in-place.
+--> 121         return func(*(_execute_task(a, cache) for a in args))
+    122     elif not ishashable(arg):
+    123         return arg
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\core.py in <genexpr>(.0)
+    119         # temporaries by their reference count and can execute certain
+    120         # operations in-place.
+--> 121         return func(*(_execute_task(a, cache) for a in args))
+    122     elif not ishashable(arg):
+    123         return arg
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\core.py in _execute_task(arg, cache, dsk)
+    119         # temporaries by their reference count and can execute certain
+    120         # operations in-place.
+--> 121         return func(*(_execute_task(a, cache) for a in args))
+    122     elif not ishashable(arg):
+    123         return arg
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\core.py in <genexpr>(.0)
+    119         # temporaries by their reference count and can execute certain
+    120         # operations in-place.
+--> 121         return func(*(_execute_task(a, cache) for a in args))
+    122     elif not ishashable(arg):
+    123         return arg
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\core.py in _execute_task(arg, cache, dsk)
+    119         # temporaries by their reference count and can execute certain
+    120         # operations in-place.
+--> 121         return func(*(_execute_task(a, cache) for a in args))
+    122     elif not ishashable(arg):
+    123         return arg
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\core.py in <genexpr>(.0)
+    119         # temporaries by their reference count and can execute certain
+    120         # operations in-place.
+--> 121         return func(*(_execute_task(a, cache) for a in args))
+    122     elif not ishashable(arg):
+    123         return arg
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\core.py in _execute_task(arg, cache, dsk)
+    119         # temporaries by their reference count and can execute certain
+    120         # operations in-place.
+--> 121         return func(*(_execute_task(a, cache) for a in args))
+    122     elif not ishashable(arg):
+    123         return arg
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\core.py in <genexpr>(.0)
+    119         # temporaries by their reference count and can execute certain
+    120         # operations in-place.
+--> 121         return func(*(_execute_task(a, cache) for a in args))
+    122     elif not ishashable(arg):
+    123         return arg
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\core.py in _execute_task(arg, cache, dsk)
+    119         # temporaries by their reference count and can execute certain
+    120         # operations in-place.
+--> 121         return func(*(_execute_task(a, cache) for a in args))
+    122     elif not ishashable(arg):
+    123         return arg
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\optimization.py in __call__(self, *args)
+    961         if not len(args) == len(self.inkeys):
+    962             raise ValueError("Expected %d args, got %d" % (len(self.inkeys), len(args)))
+--> 963         return core.get(self.dsk, self.outkey, dict(zip(self.inkeys, args)))
+    964 
+    965     def __reduce__(self):
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\core.py in get(dsk, out, cache)
+    149     for key in toposort(dsk):
+    150         task = dsk[key]
+--> 151         result = _execute_task(task, cache)
+    152         cache[key] = result
+    153     result = _execute_task(out, cache)
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\dask\core.py in _execute_task(arg, cache, dsk)
+    119         # temporaries by their reference count and can execute certain
+    120         # operations in-place.
+--> 121         return func(*(_execute_task(a, cache) for a in args))
+    122     elif not ishashable(arg):
+    123         return arg
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\stackstac\to_dask.py in fetch_raster_window(asset_entry, slices)
+    149         if windows.intersect(current_window, asset_window):
+    150             # backend: Backend = manager.acquire(needs_lock=False)
+--> 151             data = reader.read(current_window)
+    152 
+    153             return data[None, None]
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\stackstac\rio_reader.py in read(self, window, **kwargs)
+    391 
+    392     def read(self, window: Window, **kwargs) -> np.ndarray:
+--> 393         reader = self.dataset
+    394         result = reader.read(
+    395             1,
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\stackstac\rio_reader.py in dataset(self)
+    387         with self._dataset_lock:
+    388             if self._dataset is None:
+--> 389                 self._dataset = self._open()
+    390             return self._dataset
+    391 
+
+~\AppData\Local\Continuum\anaconda3\envs\stackstac\lib\site-packages\stackstac\rio_reader.py in _open(self)
+    328         with self.env.open:
+    329             with time(f"Initial read for {self.url!r} on {_curthread()}: {{t}}"):
+--> 330                 ds = SelfCleaningDatasetReader(rio.parse_path(self.url), sharing=False)
+    331             if ds.count != 1:
+    332                 ds.close()
+
+rasterio\_base.pyx in rasterio._base.DatasetBase.__init__()
+
+RasterioIOError: '/vsicurl/https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22M/EB2020/8/S2A_22MEB_20200816_0_L2A/B02.tif' not recognized as a supported file format.
