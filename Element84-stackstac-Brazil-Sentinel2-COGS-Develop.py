@@ -138,8 +138,8 @@ badlist = ['S2A_22MES_20200816_0_L2A','S2A_22MDB_20200816_0_L2A','S2A_22MFB_2020
 'S2A_23MRS_20200728_0_L2A','S2A_21MZM_20200816_0_L2A','S2A_23MRU_20200807_0_L2A','S2A_23MRS_20200807_0_L2A','S2B_23NLA_20200808_0_L2A','S2B_23MRN_20200730_0_L2A'
 ]
           
-stack = stack[~stack["id"].isin(badlist) ]
-#stack = stack[stack["id"].isin(badlist) ]  #try only bad scenes
+#stack = stack[~stack["id"].isin(badlist) ]
+stack = stack[stack["id"].isin(badlist) ]  #try only bad scenes
 #sentinel-s2-l2a-cogs/22M/ES2020
 print(stack)
 
